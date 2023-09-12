@@ -1,15 +1,14 @@
 import { format } from 'date-fns';
-import './Ticket.scss';
-// import { format } from 'date-fns';
+
+import stlTicket from './Ticket.module.scss';
 
 function Ticket(props) {
   const { carrier, segments, price } = props.ticket;
   return (
-    <div className='ticket'>
-      <div className='ticket-header'>
-        <span className='ticket-header_price'>{`${price} P`}</span>
+    <div className={stlTicket.ticket}>
+      <div className={stlTicket.ticket_header}>
+        <span className={stlTicket.ticket_header_price}>{`${price} P`}</span>
         <img src={`https://pics.avs.io/99/36/${carrier}.png`} alt='' />
-        {/* <span className="ticket-header_logo"></span> */}
       </div>
       <TicketInfo segments={segments} />
     </div>
@@ -41,28 +40,31 @@ function TicketInfo(props) {
   return segments.map((el) => {
     id += 1;
     return (
-      <div className='ticket-info ticket-info--marg' key={id}>
-        <div className='ticket-info-airports'>
-          <span className='ticket-info-airports_head'>
+      <div
+        className={`${stlTicket.ticket_info} ${stlTicket.ticket_info__marg}`}
+        key={id}
+      >
+        <div className={stlTicket.ticket_info_airports}>
+          <span className={stlTicket.ticket_info_airports_head}>
             {`${el.origin}-${el.destination}`}
           </span>
-          <span className='ticket-info-airports_content'>
+          <span className={stlTicket.ticket_info_airports_content}>
             {formatTime(el.date, el.duration)}
           </span>
         </div>
-        <div className='ticket-info-airports'>
-          <span className='ticket-info-airports_head'>В ПУТИ</span>
-          <span className='ticket-info-airports_content'>
+        <div className={stlTicket.ticket_info_airports}>
+          <span className={stlTicket.ticket_info_airports_head}>В ПУТИ</span>
+          <span className={stlTicket.ticket_info_airports_content}>
             {timeFlight(el.duration)}
           </span>
         </div>
-        <div className='ticket-info-airports'>
-          <span className='ticket-info-airports_head'>
+        <div className={stlTicket.ticket_info_airports}>
+          <span className={stlTicket.ticket_info_airports_head}>
             {el.stops.length === 0
               ? 'Без пересадок'
               : `${el.stops.length} ${declensionStops(el.stops.length)}`}
           </span>
-          <span className='ticket-info-airports_content'>
+          <span className={stlTicket.ticket_info_airports_content}>
             {el.stops.join(', ')}
           </span>
         </div>

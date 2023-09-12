@@ -1,25 +1,31 @@
-import './Tabs.scss';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { activeTabs } from '../../redux/action/action';
 
-function Tabs({ isActiveTabs, result }) {
-  const button = result.buttons.map((el) => (
+import stlTabs from './Tabs.module.scss';
+
+function Tabs() {
+  const dispatch = useDispatch();
+
+  const buttons = useSelector((state) => state.filterReducers.buttons);
+
+  const button = buttons.map((el) => (
     <button
       type='button'
-      className={el.active ? 'tabs-btn tabs-btn__active' : 'tabs-btn'}
+      className={
+        el.active
+          ? `${stlTabs.tabs_btn} ${stlTabs.tabs_btn__active}`
+          : stlTabs.tabs_btn
+      }
       key={el.id}
       onClick={() => {
-        isActiveTabs(el.id);
+        dispatch(activeTabs(el.id));
       }}
     >
       {el.name}
     </button>
   ));
-  return <div className='tabs'>{button}</div>;
+  return <div className={stlTabs.tabs}>{button}</div>;
 }
-const mapStateToProps = (state) => ({ result: state });
-const mapDispatchToProps = (dispatch) => ({
-  isActiveTabs: (data) => dispatch(activeTabs(data)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Tabs);
+
+export default Tabs;

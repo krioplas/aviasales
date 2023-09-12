@@ -11,10 +11,12 @@ export const activeTabs = (data) => ({
 });
 export const addTicket = () => ({
   type: 'ADD_LIST_TICKED',
+  stop: false,
 });
-const listTickedSuccess = (payload) => ({
+const listTickedSuccess = (payload, stop) => ({
   type: 'LIST_TICKED_SUCCESS',
   payload,
+  stop,
 });
 const listTickedStarted = () => ({
   type: 'LIST_TICKED_STARTED',
@@ -31,7 +33,7 @@ export const listTicked = () => (dispatch) => {
   dispatch(listTickedStarted());
   apiService()
     .then((res) => {
-      dispatch(listTickedSuccess(res.tickets));
+      dispatch(listTickedSuccess(res.tickets, res.stop));
     })
     .catch((err) => {
       dispatch(listTickedFailure(err.message));

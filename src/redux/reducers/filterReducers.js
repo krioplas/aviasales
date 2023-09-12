@@ -10,13 +10,10 @@ const initialState = {
     { id: 1, name: 'Самый дешевый', active: false },
     { id: 2, name: 'Самый быстрый', active: false },
   ],
-  tickets: [],
   countTickets: 5,
-  loading: false,
-  error: null,
 };
 
-const reducers = (state = initialState, action) => {
+const filterReducers = (state = initialState, action) => {
   switch (action.type) {
     case 'CHECK': {
       const checkId = action.payload;
@@ -41,44 +38,22 @@ const reducers = (state = initialState, action) => {
     }
 
     case 'ON_TABS': {
-      const sortState = state.tickets;
       const checkId = action.payload;
-
       const activeButton = state.buttons.map((el) => {
         el.active = checkId === el.id ? !el.active : el.active;
         el.active = el.active && checkId !== el.id ? false : el.active;
         return el;
       });
 
-      return { ...state, buttons: activeButton, tickets: sortState };
+      return { ...state, buttons: activeButton };
     }
     case 'ADD_LIST_TICKED':
       return {
         ...state,
         countTickets: state.countTickets + 5,
       };
-    case 'LIST_TICKED_STARTED':
-      return {
-        ...state,
-        loading: true,
-      };
-
-    case 'LIST_TICKED_SUCCESS': {
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        tickets: action.payload,
-      };
-    }
-    case 'LIST_TICKED_FAILURE':
-      return {
-        ...state,
-        loading: false,
-        error: action.payload.error,
-      };
     default:
       return state;
   }
 };
-export default reducers;
+export default filterReducers;

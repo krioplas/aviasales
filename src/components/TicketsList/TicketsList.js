@@ -1,66 +1,49 @@
 import './TicketsList.scss';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
 
-import Loader from '../Loader/loader';
 import Ticket from '../Ticket/Ticket';
 import DescriptionAlerts from '../Alert/alert';
 import { listTicked } from '../../redux/action/action';
+import utilFilter from '../../utils/utilFilter';
+import utilSort from '../../utils/utilSort';
 
-function TicketsList({ onListTicked, result }) {
-  let ticket;
+function TicketsList() {
+  const dispatch = useDispatch();
+
+  const countApi = useSelector((state) => state.apiReducer.countApi);
+
+  const filter = useSelector((state) => state.filterReducers.filter);
+  const tickets = useSelector((state) => state.apiReducer.tickets);
+  const buttons = useSelector((state) => state.filterReducers.buttons);
+  const countTickets = useSelector(
+    (state) => state.filterReducers.countTickets,
+  );
+  const error = useSelector((state) => state.apiReducer.error);
+
   useEffect(() => {
-    onListTicked();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  let checkedFilter = result.filter.filter((el) => el.checked);
-  checkedFilter = checkedFilter.map((el) => el.filterNum);
-  let newState;
-  if (checkedFilter.length === 0) {
-    newState = [];
-  } else {
-    newState = result.tickets.map((el) => {
-      const inside = el.segments[0].stops.length;
-      let newEl;
-      if (checkedFilter.includes(inside)) {
-        newEl = el;
-        return newEl;
-      }
-      return newEl;
-    });
-    newState = newState.filter((item) => item !== undefined);
+    dispatch(listTicked());
+  }, [dispatch, countApi]);
+  let ticket;
+  const filterTicket = utilFilter(filter, tickets);
+
+  const sortTicket = utilSort(buttons, filterTicket.newState);
+
+  const listTicket = sortTicket.slice(0, countTickets);
+  if (error) {
+    ticket = <DescriptionAlerts />;
   }
-  result.buttons.map((el) => {
-    if (el.id === 1 && el.active) {
-      newState.sort((a, b) => a.price - b.price);
-    }
-    if (el.id === 2 && el.active) {
-      newState.sort((a, b) => a.segments[0].duration - b.segments[0].duration);
-    }
-    return newState;
-  });
-  newState = newState.slice(0, result.countTickets);
-  if (result.loading) {
-    ticket = <Loader />;
-  } else if (result.error !== null) {
-    ticket = <DescriptionAlerts data={result.error} />;
-  } else {
-    ticket = newState.map((el) => <Ticket ticket={el} key={uuidv4()} />);
-  }
+  ticket = listTicket.map((el) => (
+    <Ticket ticket={el} key={el.segments[0].date} />
+  ));
 
   return (
     <div className='allTicket'>
-      {checkedFilter.length === 0
+      {filterTicket.checkedFilter.length === 0
         ? 'Рейсов, подходящих под заданные фильтры, не найдено'
         : ticket}
     </div>
   );
 }
-const mapDispatchToProps = (dispatch) => ({
-  onListTicked: () => {
-    dispatch(listTicked());
-  },
-});
-const mapStateToProps = (state) => ({ result: state });
-export default connect(mapStateToProps, mapDispatchToProps)(TicketsList);
+
+export default TicketsList;

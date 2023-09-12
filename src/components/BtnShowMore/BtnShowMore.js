@@ -1,20 +1,19 @@
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { addTicket } from '../../redux/action/action';
-import './BtnShowMore.scss';
 
-function BtnShowMore({ onAddTicket }) {
-  // const value = useSelector((state) => state.ticket.ticket);
-  // const dispatch = useDispatch();
-  // const sob = () => dispatch(addTicket());
+import stlBtnShowMore from './BtnShowMore.module.scss';
+
+function BtnShowMore() {
+  const dispatch = useDispatch();
 
   return (
     <div>
       <button
         type='button'
-        className='btnShowMore'
+        className={stlBtnShowMore.btnShowMore}
         onClick={() => {
-          onAddTicket();
+          dispatch(addTicket());
         }}
       >
         Показать еще 5 билетов!
@@ -22,10 +21,5 @@ function BtnShowMore({ onAddTicket }) {
     </div>
   );
 }
-const mapDispatchToProps = (dispatch) => ({
-  onAddTicket: () => {
-    dispatch(addTicket());
-  },
-});
 
-export default connect(null, mapDispatchToProps)(BtnShowMore);
+export default BtnShowMore;

@@ -1,9 +1,11 @@
-import './header.scss';
+import logo from '../../assets/logo.svg';
+
+import stlHeader from './header.module.scss';
 
 function Header() {
   return (
-    <div className='header'>
-      <img src='../../img/logo.svg' alt='LOGO' />
+    <div className={stlHeader.header}>
+      <img src={logo} alt='LOGO' />
     </div>
   );
 }

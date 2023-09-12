@@ -8,7 +8,7 @@ export const apiService = async () => {
       const body = await response.json();
       id = body.searchId;
     } else {
-      throw new Error(`Failed to fetch ${url}search`);
+      throw new Error(response.status);
     }
   }
 
@@ -17,7 +17,7 @@ export const apiService = async () => {
     const data = await newResponse.json();
     return data;
   }
-  throw new Error(`Failed to fetch ${url}tickets`);
+  throw new Error(newResponse.status);
 };
 
 export default apiService;

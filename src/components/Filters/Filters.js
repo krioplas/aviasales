@@ -1,17 +1,21 @@
-import './Filter.scss';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { activeChecked } from '../../redux/action/action';
 
-function Filter({ isAction, result }) {
-  const input = result.filter.map((el) => (
-    <div className='filter-checkbox' key={el.id}>
+import stlFilter from './Filter.module.scss';
+
+function Filter() {
+  const dispatch = useDispatch();
+
+  const filter = useSelector((state) => state.filterReducers.filter);
+  const input = filter.map((el) => (
+    <div className={stlFilter.filter_checkbox} key={el.id}>
       <input
         type='checkbox'
-        className='custom-checkbox'
+        className={stlFilter.custom_checkbox}
         id={el.id}
         onChange={() => {
-          isAction(el.id); // передаем действие с типом
+          dispatch(activeChecked(el.id)); // передаем действие с типом
         }}
         checked={el.checked}
       />
@@ -20,14 +24,11 @@ function Filter({ isAction, result }) {
     </div>
   ));
   return (
-    <div className='filter'>
-      <div className='filter-header'>Количество пересадок</div>
-      <form className='filter-form'>{input}</form>
+    <div className={stlFilter.filter}>
+      <div className={stlFilter.filter_header}>Количество пересадок</div>
+      <form className={stlFilter.filter_form}>{input}</form>
     </div>
   );
 }
-const mapStateToProps = (state) => ({ result: state });
-const mapDispatchToProps = (dispatch) => ({
-  isAction: (data) => dispatch(activeChecked(data)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+
+export default Filter;

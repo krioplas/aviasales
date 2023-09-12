@@ -1,23 +1,23 @@
 .tabs {
   display: flex;
   border-radius: 6px;
-  justify-content: flex-end;
-  &-btn {
+
+  &_btn {
     font-family: 'Open Sans', sans-serif;
     width: 50%;
     height: 50px;
     background-color: #ffffff;
     cursor: pointer;
   }
-  &-btn:nth-child(2) {
+  &_btn:nth-child(2) {
     border: 1px solid #dfe5ec;
     border-radius: 0px 5px 5px 0px;
   }
-  &-btn:nth-child(1) {
+  &_btn:nth-child(1) {
     border: 1px solid #dfe5ec;
     border-radius: 5px 0px 0px 5px;
   }
-  &-btn__active {
+  &_btn__active {
     color: #ffffff;
     background-color: #2196f3;
   }

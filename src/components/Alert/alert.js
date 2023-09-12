@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Alert, Stack } from '@mui/material';
 
-export default function DescriptionAlerts(props) {
+export default function DescriptionAlerts() {
   return (
     <Stack>
       <Alert severity='error'>
-        This is an error: <strong>{props.data}</strong>
+        Ой, что то пошло не так! Мы уже отправили фиксиков для решения проблемы,
+        попробуйте перезагрузить страницу!
       </Alert>
     </Stack>
   );
