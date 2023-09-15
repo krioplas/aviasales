@@ -8,7 +8,7 @@ export const apiService = async () => {
       const body = await response.json();
       id = body.searchId;
     } else {
-      throw new Error(response.status);
+      throw new Error(`Error status ${response.status}`);
     }
   }
 
@@ -17,7 +17,6 @@ export const apiService = async () => {
     const data = await newResponse.json();
     return data;
   }
-  throw new Error(newResponse.status);
+  throw new Error(`Error status ${newResponse.status}`);
 };
-
 export default apiService;

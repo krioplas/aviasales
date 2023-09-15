@@ -4,9 +4,10 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 
 function Progress() {
-  const stop = useSelector((state) => state.apiReducer.stop);
+  const loading = useSelector((state) => state.apiReducer.loading);
+  const error = useSelector((state) => state.apiReducer.error);
   let progress = null;
-  if (!stop) {
+  if (loading && error === false) {
     progress = (
       <Box sx={{ width: '100%' }}>
         <LinearProgress />

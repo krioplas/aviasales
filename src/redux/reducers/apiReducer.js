@@ -1,8 +1,7 @@
 const initialState = {
   tickets: [],
-  stop: null,
-  error: null,
-  countApi: 1,
+  error: false,
+  loading: false,
 };
 
 const apiReducer = (state = initialState, action) => {
@@ -10,22 +9,20 @@ const apiReducer = (state = initialState, action) => {
     case 'LIST_TICKED_STARTED':
       return {
         ...state,
-        loading: state.tickets.length === 0,
+        loading: true,
       };
 
     case 'LIST_TICKED_SUCCESS': {
-      state.tickets.push(...action.payload);
       return {
         ...state,
-        stop: action.stop,
-        countApi: action.stop ? state.countApi : state.countApi + 1,
+        tickets: state.tickets.concat(action.payload.tickets),
+        loading: !action.payload.stop,
       };
     }
     case 'LIST_TICKED_FAILURE':
       return {
         ...state,
-        error: action.payload.error !== '500',
-        countApi: state.countApi + 1,
+        error: action.payload,
       };
     default:
       return state;
